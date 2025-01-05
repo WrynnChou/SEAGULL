@@ -8,7 +8,7 @@ This repository provides an implement of **S**ubsampling assist**E**d **A**ctive
 * Select representative points to query. 
 * Cold-start supervised learning.
 
-![pro](figure\pro.png)
+![pro](seagull.png)
 
 ## Requirement
 
@@ -79,5 +79,4 @@ python main_fintun_tiny_imagenet.py -a resnet50 --lr 0.0005 --batch-size 32 --ep
 ## Results
 
 Train loss and test loss on Cifar10.
-
 
