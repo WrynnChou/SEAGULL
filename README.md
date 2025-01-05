@@ -8,7 +8,7 @@ This repository provides an implement of **S**ubsampling assist**E**d **A**ctive
 * Select representative points to query. 
 * Cold-start supervised learning.
 
-![pro](D:\7\study\SEAGULL\figure\pro.png)
+![pro](figure\pro.png)
 
 ## Requirement
 
