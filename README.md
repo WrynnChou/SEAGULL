@@ -40,18 +40,18 @@ Or in tabular form
 
 ## Usage
 
-1. Train self-supervised model, i.e., MoCo. 
+Here, we give an example on Cifar10 with [MoCo v2](https://github.com/facebookresearch/moco). (SimCLR pytorch implement refer to this [repository](https://github.com/sthalles/SimCLR).
+
+1. **Train self-supervised model with unlabeled data.** Here we choose resnet18 as the basic encoder. The meaning of parameters are the same with [MoCo v2](https://github.com/facebookresearch/moco). Note that thee out dimension of MoCo here is 16 instead of 128.
 
 ```python
-Python train_feature.py
+python main_moco.py -a resnet18 --lr 0.015 --batch-size 128 --epochs 512  --dist-url 'tcp://localhost:10001' --world-size 1 --rank 0 --moco-dim 16 --moco-t 0.05 --moco-k 65536 --mlp --aug-plus --cos /data/cifar
 ```
 
-2. 
-
-   Run in R.
+2. Use DC-DDS choose the representative data to query. Run example_dcdds in R. More details, run the following codes.
 
 ```R
-path = "feature/resnet50_moco_cifar10_feature.txt"
+path = "feature/resnet50_moco_cifar10_feature.txt" # your feature path
 # b: number of block, m: subset in one block, b * m = n.
 # seed: random seed, dim: PCA reduced dimension.
 m = 25
@@ -60,14 +60,13 @@ dim = 5
 seed = 100
 data = read.table(path)
 selected_data = seq_DDS_givendim(data, m, b, dim, seed)
-write.csv(selected_data, paste("cifar", dim, m, b, "indices.csv", sep = "_"),row.names = F)
-
+write.csv(selected_data, paste("r/cifar", dim, m, b, "indices.csv", sep = "_"),row.names = F) # indices path
 ```
 
 3. 
 
 ```python
-python main_fintun_tiny_imagenet.py -a resnet50 --lr 0.0005 --batch-size 32 --epochs 50 --pretrained checkpoint_best_16.pth.tar --dist-url 'tcp://localhost:10001' --world-size 1 --rank 0 --subsetsize 500 --seed 777 --learning-mode active --active-indices r/imagenet_16_greedyk500_2indices.csv data/tiny-imagenet-200
+python main_lincls.py -a resnet50 --lr 0.0005 --batch-size 32 --epochs 50 --pretrained checkpoint_best_16.pth.tar --dist-url 'tcp://localhost:10001' --world-size 1 --rank 0 --subsetsize 500 --seed 777 --learning-mode active --active-indices r/imagenet_16_greedyk500_2indices.csv data/tiny-imagenet-200
 ```
 
 ​	
